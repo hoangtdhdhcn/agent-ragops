@@ -29,7 +29,6 @@ USER root
 COPY <<EOF /app/start.sh
 #!/bin/bash
 echo "Starting RAG Assistant on port 7860..."
-cd project
 python app.py
 EOF
 RUN chmod +x /app/start.sh && chown user:user /app/start.sh

@@ -4,7 +4,7 @@ services:
   rag-assistant:
     build:
       context: .
-      dockerfile: project/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "7860:7860"
     environment:

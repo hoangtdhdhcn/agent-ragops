@@ -8,5 +8,8 @@ __pycache__/
 
 .env
 eval/.env
+eval/triad_metrics.py
 report/
 agent-rag
+temp/
+production/
