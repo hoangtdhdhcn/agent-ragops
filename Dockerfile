@@ -1,49 +1,45 @@
-FROM python:3.11
+# Use slim image (smaller & more stable for CI)
+FROM python:3.11-slim
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-ENV GRADIO_SERVER_NAME=0.0.0.0
-ENV GRADIO_SERVER_PORT=7860
+# Environment variables
+ENV PYTHONUNBUFFERED=1 \
+    GRADIO_SERVER_NAME=0.0.0.0 \
+    GRADIO_SERVER_PORT=7860
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    ca-certificates \
     build-essential \
+    gcc \
+    g++ \
+    git \
+    curl \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Create user
-RUN useradd -m -u 1000 user
+# Create non-root user
+RUN useradd -m -u 1000 appuser
 
 # Set working directory
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
-COPY --chown=user requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir --upgrade setuptools wheel && \
-    pip install --no-cache-dir -r requirements.txt || \
-    (echo "Retrying with --no-deps..." && \
-     pip install --no-cache-dir --upgrade pip setuptools wheel && \
-     pip install --no-cache-dir --no-deps -r requirements.txt && \
-     pip install --no-cache-dir -r requirements.txt)
+# Copy only requirements first (better Docker caching)
+COPY requirements.txt .
+
+# Upgrade pip tools and install dependencies
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY --chown=user . .
+COPY . .
 
-# Create start script
-USER root
-COPY <<EOF /app/start.sh
-#!/bin/bash
-echo "Starting RAG Assistant on port 7860..."
-python app.py
-EOF
-RUN chmod +x /app/start.sh && chown user:user /app/start.sh
+# Change ownership to non-root user
+RUN chown -R appuser:appuser /app
 
 # Switch to non-root user
-USER user
+USER appuser
 
 # Expose port
 EXPOSE 7860
 
-# Start the application
-CMD ["/app/start.sh"]
+# Start app
+CMD ["python", "app.py"]
