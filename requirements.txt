@@ -1,0 +1,45 @@
+langgraph
+langchain
+langchain-community
+langchain-qdrant
+langchain-huggingface
+langchain_groq
+qdrant-client
+fastembed
+flashrank
+langchain-core
+gradio
+transformers
+huggingface_hub
+pymupdf
+pymupdf4llm
+langchain-google-genai
+# Multi-format ingestion dependencies
+beautifulsoup4
+requests
+Pillow
+pytesseract
+pandas
+python-docx
+docx
+python-pptx
+pptx
+pdfminer.six
+lxml
+pydantic
+
+# Monitoring and observability dependencies
+psutil
+GPUtil
+prometheus_client
+matplotlib
+seaborn
+
+# Deduplication dependencies
+numpy
+scikit-learn
+faiss-cpu
+sentence-transformers
+
+dotenv
+bs4
