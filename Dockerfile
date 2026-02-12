@@ -8,6 +8,7 @@ ENV GRADIO_SERVER_PORT=7860
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     ca-certificates \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Create user
@@ -19,7 +20,12 @@ WORKDIR /app
 # Copy requirements and install Python dependencies
 COPY --chown=user requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir --upgrade setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt || \
+    (echo "Retrying with --no-deps..." && \
+     pip install --no-cache-dir --upgrade pip setuptools wheel && \
+     pip install --no-cache-dir --no-deps -r requirements.txt && \
+     pip install --no-cache-dir -r requirements.txt)
 
 # Copy application code
 COPY --chown=user . .
