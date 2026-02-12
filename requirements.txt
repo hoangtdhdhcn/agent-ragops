@@ -1,45 +1,52 @@
+# Core LangChain stack
 langgraph
 langchain
 langchain-community
 langchain-qdrant
 langchain-huggingface
 langchain_groq
+langchain-core
+langchain-google-genai
+
+# Vector DB
 qdrant-client
+
+# Embeddings / ranking
 fastembed
 flashrank
-langchain-core
+sentence-transformers
+
+# UI
 gradio
+
+# HuggingFace
 transformers
 huggingface_hub
+
+# PDF / document ingestion
 pymupdf
 pymupdf4llm
-langchain-google-genai
-# Multi-format ingestion dependencies
+pdfminer.six
+python-docx
+python-pptx
 beautifulsoup4
 requests
 Pillow
 pytesseract
 pandas
-python-docx
-docx
-python-pptx
-pptx
-pdfminer.six
 lxml
-pydantic
 
-# Monitoring and observability dependencies
+# ML / math
+numpy
+scikit-learn
+
+# Monitoring
 psutil
 GPUtil
 prometheus_client
 matplotlib
 seaborn
 
-# Deduplication dependencies
-numpy
-scikit-learn
-faiss-cpu
-sentence-transformers
-
-dotenv
-bs4
+# Env
+python-dotenv
+pydantic
